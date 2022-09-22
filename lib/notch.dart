@@ -32,21 +32,18 @@ class _NotchProgressState extends State<NotchProgress> {
     double progress =
         StatusBarProgressController.of(context, listen: true)?.progress ?? 0.0;
 
-    return Stack(
-      children: [
-        Positioned.fill(child: widget.child),
-        if (_notchPath != null)
-          Positioned.fill(
-            child: CustomPaint(
-              foregroundPainter: _NotchPainter(
-                _notchPath!.toPath(MediaQuery.of(context).devicePixelRatio),
-                _notchPath!.circular,
-                progress,
-              ),
-            ),
-          ),
-      ],
-    );
+    if (_notchPath != null) {
+      return CustomPaint(
+        foregroundPainter: _NotchPainter(
+          _notchPath!.toPath(MediaQuery.of(context).devicePixelRatio),
+          _notchPath!.circular,
+          progress,
+        ),
+        child: widget.child,
+      );
+    } else {
+      return widget.child;
+    }
   }
 
   void _computeNotchPath() async {
